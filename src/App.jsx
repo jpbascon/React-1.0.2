@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import Search from './components/Search.jsx';
 import Spinner from './components/Spinner.jsx';
 import MovieCard from './components/MovieCard.jsx';
+import MovieDescription from './components/MovieDescription';
 import { useDebounce } from 'react-use';
 import { updateSearchCount, getTrendingMovies } from './appwrite.js';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-const API_BASE_URL = 'https://api.themoviedb.org/3'; // API this software is trying to communicate with
+export const API_BASE_URL = 'https://api.themoviedb.org/3'; // API this software is trying to communicate with
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY; // Contains the API Key
 
@@ -75,48 +77,57 @@ const App = () => {
     fetchMovies(debouncedSearchTerm);
   }, [debouncedSearchTerm]);
 
+  console.log(movieList);
+
   return (
     <>
-      <main>
-        <div className="pattern" />
-        <div className="wrapper">
-          <header>
-            <img src="./hero.png" alt="Hero Banner" />
-            <h1>Find <span className="text-gradient">Movies</span> You'll Enjoy Without the Hassle</h1>
-            <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> {/* Sends state to the component Search */}
-          </header>
-
-          {trendingMovies.length > 0 && (
-            <section className="trending">
-              <h2>Trending Movies</h2>
-              <ul>
-                {trendingMovies.map((movie, index) => (
-                  <li key={movie.$id}>
-                    <p>{index + 1}</p>
-                    <img src={movie.poster_url} alt={movie.title} />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          <section className="all-movies">
-            <h2>All Movies</h2>
-
-            {isLoading ? (
-              <Spinner /> // Proceed to display loading if it's true.
-            ) : errorMessage ? (
-              <p className="text-red-500">{errorMessage}</p> // Displays loading is false and errorMessage has a truthy value
-            ) : (
-              <ul>
-                {movieList.map((movie) => (
-                  <MovieCard key={movie.id} movie={movie} /> // Shows when isLoading is false AND errorMessage is falsy
-                ))}
-              </ul>
-            )}
-          </section>
-        </div>
-      </main>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <main>
+                <div className="pattern" />
+                <div className="wrapper">
+                  <header>
+                    <img src="./hero.png" alt="Hero Banner" />
+                    <h1>Find <span className="text-gradient">Movies</span> You'll Enjoy Without the Hassle</h1>
+                    <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> {/* Sends state to the component Search */}
+                  </header>
+                  {trendingMovies.length > 0 && (
+                    <section className="trending">
+                      <h2>Trending Movies</h2>
+                      <ul>
+                        {trendingMovies.map((movie, index) => (
+                          <li key={movie.$id}>
+                            <p>{index + 1}</p>
+                            <img src={movie.poster_url} alt={movie.title} />
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  )}
+                  <section className="all-movies">
+                    <h2>All Movies</h2>
+                    {isLoading ? (
+                      <Spinner /> // Proceed to display loading if it's true.
+                    ) : errorMessage ? (
+                      <p className="text-red-500">{errorMessage}</p> // Displays loading is false and errorMessage has a truthy value
+                    ) : (
+                      <ul>
+                        {movieList.map((movie) => (
+                          <MovieCard key={movie.id} movie={movie} /> // Shows when isLoading is false AND errorMessage is falsy
+                        ))}
+                      </ul>
+                    )}
+                  </section>
+                </div>
+              </main>
+            }
+          />
+          <Route path="/movie/:id" element={<MovieDescription />} />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }

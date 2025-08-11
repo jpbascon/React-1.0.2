@@ -61,7 +61,7 @@
     @apply mt-20;
 
     & ul {
-      @apply flex flex-row overflow-y-auto gap-5 -mt-10 w-full hide-scrollbar;
+      @apply flex flex-row overflow-y-auto gap-5 mt-10 w-full hide-scrollbar;
     }
 
     & ul li {
@@ -102,7 +102,7 @@
   }
 
   .movie-card {
-    @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-light-100/10;
+    @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-light-100/10 cursor-pointer;
 
     & img {
       @apply rounded-lg h-auto w-full;
@@ -138,6 +138,22 @@
 
     & .content .year {
       @apply text-gray-100 font-medium text-base;
+    }
+  }
+
+  .movie-description {
+    @apply flex justify-center items-center min-h-screen max-w-6xl mx-auto;
+
+    & .movie-description-information {
+      @apply flex flex-col justify-between px-14;
+    }
+
+    & h1 {
+      @apply text-white text-left text-5xl/14 w-full m-0;
+    }
+
+    & p {
+      @apply text-yellow-300 font-bold mt-10;
     }
   }
 }
