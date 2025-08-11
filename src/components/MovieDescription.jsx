@@ -47,7 +47,7 @@ const MovieDescription = () => {
                 <h1>{movie.title}</h1>
                 <p className="flex gap-1">IMDB:
                   &nbsp;{movie.vote_average.toFixed(1)}
-                  <img src="../../public/star.svg" />
+                  <img src="/star.svg" alt="Star" />
                 </p>
                 <p className="text-white mt-0">Upvoted: {movie.vote_count}</p>
                 <p className="text-white font-normal">{movie.overview}</p>
